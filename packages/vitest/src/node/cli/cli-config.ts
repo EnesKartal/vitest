@@ -84,6 +84,21 @@ export const cliOptionsConfig: VitestCLIOptions = {
     shorthand: 'u',
     description: 'Update snapshot (accepts boolean, "new", "all" or "none")',
     argument: '[type]',
+    transform(value) {
+      if (value === true || value === 'true') {
+        return true
+      }
+      if (value === false || value === 'false') {
+        return false
+      }
+      if (value === 'new' || value === 'all' || value === 'none') {
+        return value
+      }
+
+      throw new TypeError(
+        `Unexpected value "--update=${value}". Use "--update=new ${value}" instead.`,
+      )
+    },
   },
   watch: {
     shorthand: 'w',

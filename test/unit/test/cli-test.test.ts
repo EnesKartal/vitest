@@ -433,6 +433,21 @@ test('silent', () => {
   )
 })
 
+test('update', () => {
+  expect(getCLIOptions('-u')).toMatchObject({ update: true })
+  expect(getCLIOptions('--update')).toMatchObject({ update: true })
+  expect(getCLIOptions('--update=true')).toMatchObject({ update: true })
+  expect(getCLIOptions('--update=false')).toMatchObject({ update: false })
+  expect(getCLIOptions('--update=new')).toMatchObject({ update: 'new' })
+  expect(getCLIOptions('--update=all')).toMatchObject({ update: 'all' })
+  expect(getCLIOptions('--update=none')).toMatchObject({ update: 'none' })
+  expect(getCLIOptions('--update=new example.test.ts')).toMatchObject({ update: 'new' })
+
+  expect(() => getCLIOptions('-u example.test.ts')).toThrowErrorMatchingInlineSnapshot(
+    `[TypeError: Unexpected value "--update=example.test.ts". Use "--update=new example.test.ts" instead.]`,
+  )
+})
+
 test('public parseCLI works correctly', () => {
   expect(parseCLI('vitest dev')).toEqual({
     filter: [],
